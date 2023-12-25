@@ -1,3 +1,4 @@
+import os.path
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
@@ -38,6 +39,15 @@ df = pd.DataFrame(data)
 # Convert 'Timestamp' column into datetime objects
 df['Timestamp'] = pd.to_datetime(df['Timestamp'])
 
+# Set a relative path
+folder_name = 'output'
+current_directory = os.path.dirname(__file__)  # Gets the directory where the script is located
+path = os.path.join(current_directory, folder_name)
+
+# Create directory if it doesn't exist
+if not os.path.exists(path):
+    os.makedirs(path)
+
 # Bar Chart: Number of Articles by Category
 category_counts = df['Category'].value_counts()
 plt.figure(figsize=(14, 10))
@@ -47,7 +57,7 @@ plt.xlabel('Category')
 plt.ylabel('Number of Articles')
 plt.xticks(rotation=45, ha='right')  # Rotate category names
 plt.tight_layout(pad=5)
-plt.savefig('articles_by_category.png')
+plt.savefig(os.path.join(path, 'articles_by_category.png'))
 
 # WordCloud: Article Titles
 all_titles = ' '.join(df['Title'])
@@ -56,7 +66,7 @@ plt.figure(figsize=(8, 8), facecolor=None)
 plt.imshow(wordcloud)
 plt.axis("off")
 plt.tight_layout(pad=5)
-plt.savefig('titles_wordcloud')
+plt.savefig(os.path.join(path, 'titles_wordcloud'))
 
 # Save the DataFrame to an Excel file
-df.to_excel('CNA_latest_news.xlsx', index=False)
+df.to_excel(os.path.join(path, 'CNA_latest_news.xlsx'), index=False)
