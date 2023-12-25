@@ -9,7 +9,7 @@ from wordcloud import WordCloud
 webpage = requests.get('https://www.channelnewsasia.com/latest-news').text
 
 # Parse HTML content using Beautiful Soup
-soup = BeautifulSoup(webpage, 'lxml')
+soup = BeautifulSoup(webpage, 'html.parser')
 articles = soup.find_all('div', class_="media-object")
 
 # Initialise lists to store article details
